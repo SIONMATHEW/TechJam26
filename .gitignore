@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+*.zip
+
+# Slurm logs are ignored by default. Curated evidence copied under
+# results/raw/ is retained.
+*.out
+!results/raw/*.out
+
+# Local editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
