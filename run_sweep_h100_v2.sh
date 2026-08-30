@@ -1,43 +1,5 @@
-#!/usr/bin/env bash
-set -u -o pipefail
-
-cd ~/techjam3
-mkdir -p logs
-
-# Set up venv once; reuse it on later runs.
-if [ ! -d ~/kernel-env-h100 ]; then
-  echo "=== Creating venv (first run only) ==="
-  python3 -m venv ~/kernel-env-h100
-  source ~/kernel-env-h100/bin/activate
-  pip install --upgrade pip
-  pip install torch --index-url https://download.pytorch.org/whl/cu121
-  pip install numpy
-else
-  source ~/kernel-env-h100/bin/activate
-fi
-
-RUN_ID="$(date +%Y%m%d-%H%M%S)"
-LOGFILE="logs/sweep-v2-${RUN_ID}.log"
-SUMMARYFILE="logs/summary-v2-${RUN_ID}.tsv"
-
-exec > >(tee "$LOGFILE") 2>&1
-
-echo "=== Run ID: ${RUN_ID} ==="
-echo "Script: torch_transformer_benchmark_v2.py"
-echo "Full log: ${LOGFILE}"
-
-echo
-echo "=== Environment ==="
-hostname
-nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
-python - <<'PY'
-import torch
-print("torch:", torch.__version__)
-print("compiled CUDA:", torch.version.cuda)
-print("CUDA available:", torch.cuda.is_available())
-print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "none")
-PY
-
+# padding-ratio is deliberately left at 0. v2's padded path does not exclude
+# padded keys inside SDPA, so it does not reproduce the baseline under padding.
 COMMON_ARGS=(
   --device cuda
   --dtype float32
@@ -56,14 +18,17 @@ run_shape() {
   echo "########################################################################"
   echo "SHAPE ${shape_id}: eager baseline versus eager SDPA"
   echo "########################################################################"
-  if ! python torch_transformer_benchmark_v2.py "${COMMON_ARGS[@]}" "$@" \
+  # v2 compiles itself in __init__, so the eager arm must switch it off
+  # explicitly. Omitting this flag silently gives a compiled model.
+  if ! python torch_transformer_benchmark_v2.py \
+    "${COMMON_ARGS[@]}" "$@" \
     --user-compile-mode off; then
     echo "SHAPE ${shape_id} EAGER FAILED; continuing sweep"
   fi
 
   echo
   echo "########################################################################"
-  echo "SHAPE ${shape_id}: eager baseline versus compiled SDPA"
+  echo "SHAPE ${shape_id}: eager baseline versus compiled SDPA (CUDA graphs)"
   echo "########################################################################"
   if ! python torch_transformer_benchmark_v2.py \
     "${COMMON_ARGS[@]}" "$@" \
