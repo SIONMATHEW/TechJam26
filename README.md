@@ -216,5 +216,5 @@ Results were produced on:
 ## Team
 
 - **Shubhan Gabra**
-- **Anugrah Baglla**
+- **Anugrah Bagla**
 - **Saayuj Ion Mathew**
