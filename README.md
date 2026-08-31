@@ -91,17 +91,6 @@ Verify the GPU is visible:
 ```bash
 python3 -c "import torch; print(torch.cuda.get_device_name(0))"
 ```
-
-### On a SLURM cluster
-
-The login node has no GPU. Allocate one, then connect to it:
-
-```bash
-salloc --partition=gpu --gres=gpu:h100-96:1 --time=02:00:00
-squeue -u $USER          # note the allocated node
-ssh <node>
-```
-
 ---
 
 ## Reproducing our results
