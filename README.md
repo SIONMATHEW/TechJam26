@@ -67,7 +67,7 @@ Requires Python 3.12 and an NVIDIA GPU. PyTorch ships its own CUDA runtime, so a
 system CUDA toolkit is not needed for the benchmark itself.
 
 ```bash
-python3 -m venv ~/kernel-env
+python3 -m venv ~/techjam
 source ~/kernel-env/bin/activate
 pip install --upgrade pip
 pip install torch --index-url https://download.pytorch.org/whl/cu121
