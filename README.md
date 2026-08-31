@@ -51,10 +51,10 @@ works without modification.
 
 | Path | What it is |
 |---|---|
-| `torch_transformer_benchmark_v4.py` | **Final submission.** Full benchmark harness with our optimized model. |
-| `torch_transformer_benchmark_v3.py` | Packed QKV, without static shape specialization. |
-| `torch_transformer_benchmark_v2.py` | Hoisted mask and compile-in-constructor. |
-| `torch_transformer_benchmark_v1.py` | Fused attention only. |
+| `torch_transformer_old_versions/torch_transformer_benchmark_v4.py` | **Final submission.** Full benchmark harness with our optimized model. |
+| `torch_transformer_old_versions/torch_transformer_benchmark_v3.py` | Packed QKV, without static shape specialization. |
+| `torch_transformer_old_versions/torch_transformer_benchmark_v2.py` | Hoisted mask and compile-in-constructor. |
+| `torch_transformer_old_versions/torch_transformer_benchmark_v1.py` | Fused attention only. |
 | `profile_shapes.py` | Per-operator CUDA time breakdown, baseline vs optimized. |
 | `shape14_probe.py` | Runs shape 14 against the optimized model only, since the reference cannot execute it. |
 | `run_sweep_h100_v2.sh` | Sweep across shapes 1–13, eager and compiled. |
@@ -86,7 +86,7 @@ python3 -c "import torch; print(torch.cuda.get_device_name(0))"
 ### Single shape
 
 ```bash
-python3 torch_transformer_benchmark_v4.py --causal --dtype float32 \
+python3 torch_transformer_benchmark.py --causal --dtype float32 \
   --batch-size 64 --seq-len 128 --d-model 128 --heads 4 --ffn-dim 128 --layers 4
 ```
 
@@ -102,11 +102,11 @@ The numbers in the table above come from the harness's full timing settings
 run_shape() {
   local id="$1"; shift
   echo "### SHAPE ${id} EAGER ###"
-  python3 torch_transformer_benchmark_v4.py --causal --dtype float32 \
+  python3 torch_transformer_benchmark.py --causal --dtype float32 \
     --warmup 20 --repeats 100 --benchmark-rounds 3 --accuracy-trials 5 \
     --user-compile-mode off "$@"
   echo "### SHAPE ${id} COMPILED ###"
-  python3 torch_transformer_benchmark_v4.py --causal --dtype float32 \
+  python3 torch_transformer_benchmark.py --causal --dtype float32 \
     --warmup 20 --repeats 100 --benchmark-rounds 3 --accuracy-trials 5 \
     --user-compile-mode reduce-overhead "$@"
 }
@@ -129,7 +129,7 @@ run_shape 13 --batch-size 64    --seq-len 1024 --d-model 128  --heads 4  --ffn-d
 ### Profiling
 
 ```bash
-python3 profile_shapes.py --module torch_transformer_benchmark_v4
+python3 profile_shapes.py --module torch_transformer_benchmark
 ```
 
 Defaults to shape 8. Uses `--user-compile-mode off` by default, because a compiled
