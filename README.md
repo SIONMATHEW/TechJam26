@@ -1,4 +1,4 @@
-# MegaMind — GPU Kernel Optimization for a Transformer Layer
+# MegaMind - GPU Kernel Optimization for a Transformer Layer
 
 TechJam 2026, Track 3: *Implement a GPU Kernel for a Transformer Layer*
 
