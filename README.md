@@ -217,15 +217,15 @@ is close to the limit for a precision-preserving change here.
 
 **Custom GEMM kernels were evaluated and rejected on evidence.** Running Inductor
 in `max-autotune` generates and benchmarks dozens of Triton matmul kernels against
-cuBLAS. cuBLAS won every comparison — the best Triton candidates reached 86% and
-79% of library performance on our two hottest matmuls — and end-to-end
+cuBLAS. cuBLAS won every comparison - the best Triton candidates reached 86% and
+79% of library performance on our two hottest matmuls - and end-to-end
 `max-autotune` came out slightly slower than `reduce-overhead` (1.449x vs 1.461x)
 after roughly 250 seconds of compilation.
 
 **Reduced precision does not meet the tolerance.** bfloat16 fails badly. float16
 comes close but still fails on roughly 130 elements out of 84 million. The subtlety
 is that the target is not the mathematically correct answer but the reference's own
-float16 arithmetic — we tried keeping the residual stream in float32 to limit error
+float16 arithmetic - we tried keeping the residual stream in float32 to limit error
 accumulation and agreement got *worse*, because being more accurate than the
 reference is still being different from it.
 
@@ -247,7 +247,7 @@ question with the organizers and would prefer an official validation path.
 - **GPU:** NVIDIA H100 NVL, 93.09 GiB
 - **PyTorch:** 2.5.1+cu121, CUDA build 12.1
 - **Python:** 3.12.3
-- **Cluster:** NUS SoC compute cluster (SLURM), node `xgpi8`
+- **Cluster:** NUS SoC compute cluster (SLURM)
 
 ---
 
