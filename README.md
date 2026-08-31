@@ -10,8 +10,8 @@ faster.
 
 | | Geometric mean | Range | Accuracy |
 |---|---|---|---|
-| Fusion only (eager) | **2.54x** | 1.35x – 3.91x | 13/13 PASS |
-| Fusion + compilation | **4.52x** | 1.46x – 8.40x | 13/13 PASS |
+| Fusion only (eager) | **2.54x** | 1.35x - 3.91x | 13/13 PASS |
+| Fusion + compilation | **4.52x** | 1.46x - 8.40x | 13/13 PASS |
 
 Compilation is baked into the model constructor, so running the benchmark with no
 extra flags gives the compiled result.
@@ -33,7 +33,7 @@ four measured steps:
    copies before attention since the fused backend accepts strided inputs.
 2. **Hoisted padding mask.** The published shapes have no padding, so the
    baseline's per-layer `masked_fill` is a no-op executed `num_layers` times per
-   call. We check once whether the mask is trivial and skip it — caching the check
+   call. We check once whether the mask is trivial and skip it - caching the check
    by tensor identity so it does not force a GPU sync inside a CUDA graph.
 3. **Packed QKV projection.** Q, K and V share an input, so their three separate
    `nn.Linear` calls become one matmul against a concatenated weight, built once
@@ -184,7 +184,7 @@ GEMM kernels was not a good use of remaining effort.
 **Reduced precision does not meet the tolerance.** bfloat16 fails badly.
 float16 comes close but still fails on roughly 130 elements out of 84 million.
 The subtlety is that the target is not the mathematically correct answer but the
-reference's own float16 arithmetic — we tried keeping the residual stream in
+reference's own float16 arithmetic - we tried keeping the residual stream in
 float32 to limit error accumulation and it made agreement *worse*, because being
 more accurate than the reference is still being different from it.
 
