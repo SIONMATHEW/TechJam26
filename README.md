@@ -57,7 +57,7 @@ works without modification.
 | `torch_transformer_old_versions/torch_transformer_benchmark_v1.py` | Fused attention only. |
 | `profile_shapes.py` | Per-operator CUDA time breakdown, baseline vs optimized. |
 | `shape14_probe.py` | Runs shape 14 against the optimized model only, since the reference cannot execute it. |
-| `run_sweep_h100_v4.sh` | Sweep across shapes 1–13, eager and compiled. |
+| `run_sweep_h100.sh` | Sweep across shapes 1–13, eager and compiled. |
 | `logs/` | Raw benchmark and profiler output. |
 
 ---
