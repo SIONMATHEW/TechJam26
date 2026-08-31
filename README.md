@@ -68,7 +68,7 @@ system CUDA toolkit is not needed for the benchmark itself.
 
 ```bash
 python3 -m venv ~/techjam
-source ~/kernel-env/bin/activate
+source ~/techjam/bin/activate
 pip install --upgrade pip
 pip install torch --index-url https://download.pytorch.org/whl/cu121
 pip install numpy
