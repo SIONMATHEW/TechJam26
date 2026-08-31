@@ -1,5 +1,0 @@
-JobID             State ExitCode    Elapsed        NodeList 
------------- ---------- -------- ---------- --------------- 
-770672        COMPLETED      0:0   00:04:09          xgpi19 
-770672.batch  COMPLETED      0:0   00:04:09          xgpi19 
-770672.exte+  COMPLETED      0:0   00:04:09          xgpi19 
